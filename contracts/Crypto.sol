@@ -21,6 +21,7 @@ contract Crypto {
   }
 
   Journalist[] whitelist;
+  uint maxSalary = 5000;
 
   function() {
     //throw;
@@ -43,11 +44,28 @@ contract Crypto {
       funders[msg.sender] = value;
     }
 
+    function getWitheList() returns (address r) {
+      Journalist j = whitelist[0];
+      r = j.addresse;
+      return r;
+    }
 
    function askForSalary(uint salary) {
+       bool isValid = false;
        //vérifier l'état de la whitelist
-       //sinon throw
+       for (uint i=0; i < whitelist.length; i++) {
+          if (whitelist[i].addresse == msg.sender) isValid = true;
+       }
+       //si non whitelist => throw
+       if (!isValid) {
+         throw;
+       }
+
        //si true => envoi d'un salaire
+        if (salary > maxSalary) {
+          salary = maxSalary;
+        }
+        msg.sender.send(salary);
        //enregistrer l'opération dans l'historique
    }
 

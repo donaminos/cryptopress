@@ -33,20 +33,24 @@ function refreshBalance() {
   var balance_element = document.getElementById("funds");
   if (balance_element)
   balance_element.innerHTML = balance;
-
-  // cryptoContract.getBalance.call(account, {from: account}).then(function(value) {
-  //   var balance_element = document.getElementById("balance");
-  //   balance_element.innerHTML = value.valueOf();
-  // }).catch(function(e) {
-  //   console.log(e);
-  //   setStatus("Error getting balance; see log.");
-  // });
 };
+
+function registerJournalist() {
+  var cryptoContract = Crypto.deployed();
+  var pseudo_element = document.getElementById("pseudo");
+  if (pseudo_element) console.log('pseudo_element ', pseudo_element.value);
+  console.log('account to register ', account);
+}
+function askForSalary() {
+  var cryptoContract = Crypto.deployed();
+  var salary_element = document.getElementById("salary");
+  if (salary_element) console.log('salary_element ', salary_element.value);
+  console.log('account asking money ', account);
+}
 
 function sendCoin() {
   var crypto = Crypto.deployed();
   var amount = parseInt(document.getElementById("amount").value);
-  // var receiver = document.getElementById("receiver").value;
   if (amount === '') return;
   console.log('amount')
   setStatus("Initiating transaction... (please wait)");
@@ -76,14 +80,6 @@ function sendCoin() {
       refreshBalance();
     });
   }
-
-  // meta.sendCoin(receiver, amount, {from: account}).then(function() {
-  //   setStatus("Transaction complete!");
-  //   refreshBalance();
-  // }).catch(function(e) {
-  //   console.log(e);
-  //   setStatus("Error sending coin; see log.");
-  // });
 };
 
 function getAddresses() {
@@ -104,21 +100,13 @@ window.onload = function() {
   if (contract_element)
   contract_element.innerHTML = cryptoContract.address;
 
-  var address = cryptoContract.getCaller().then(function(value) {
+  cryptoContract.getCaller().then(function(value) {
     console.log("caller :", value);
     var balance = web3.fromWei(web3.eth.getBalance(cryptoContract.address), "ether");
-    console.log(balance.c[0] + ' ethers');
     var balance_element = document.getElementById("funds");
     if (balance_element)
     balance_element.innerHTML = balance;
   });
-  // cryptoContract.getNow()
-  //   .then(function (value) {
-  //   console.log('now ', value);
-  // }).catch(function (error) {
-  //   console.log('error ', error);
-  // });
-
 
   web3.eth.getAccounts(function(err, accs) {
     if (err != null) {
@@ -132,9 +120,6 @@ window.onload = function() {
     }
 
     accounts = accs;
-  //  account = accounts[0];
-
-    //refreshBalance();
     displayAccounts();
   });
 }
